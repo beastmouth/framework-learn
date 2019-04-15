@@ -1,12 +1,13 @@
 # GetBean 方法解析
 ### 方法：AbstractBeanFactory的doGetBean方法：
-##### 1.转化bean的名称	
+##### 1.转化bean的名称（获取真正的BeanName）	
 ![image1](../../images/getBeanImages/getBean-image1.png)
-##### 2.通过getSingleton获取实例
-#####   * 获取到的话 则取获取对应的bean实例（获取方法：从缓存中获取或者从bean工厂中获取）
+##### 2.通过getSingleton获取实例（尝试从单例集合中获取bean实例）
+#####   *从Bean实例中获取目标对象
+######   ** 获取到的话 则取获取对应的bean实例（获取方法：从缓存中获取或者从bean工厂中获取）
 ![image2](../../images/getBeanImages/getBean-image2.png)
 ![image3](../../images/getBeanImages/getBean-image3.png)
-#####   * 获取不到则从ParentBeanFactory中获取
+######   ** 获取不到则从ParentBeanFactory中获取
 ![image4](../../images/getBeanImages/getBean-image4.png)
 ##### 3.获取bean的定义（递归）
 ![image5](../../images/getBeanImages/getBean-image5.png)
