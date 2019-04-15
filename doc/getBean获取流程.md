@@ -15,3 +15,5 @@
 ![image7](../images/getBeanImages/getBean-image7.png)
 ##### 5.检验创建的bean类型是否符合需要的实例 是的话就返回
 ![image8](../images/getBeanImages/getBean-image8.png)
+##### getBean 全流程
+![image9](../images/getBeanImages/getBean-image9.jpg)
