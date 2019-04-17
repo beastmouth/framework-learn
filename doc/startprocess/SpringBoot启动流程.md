@@ -10,20 +10,20 @@
 		Class<?>[] types = new Class<?>[] { SpringApplication.class, String[].class };
 		return new SpringApplicationRunListeners(logger, getSpringFactoriesInstances(
 				SpringApplicationRunListener.class, types, this, args));
-	}
+    }
 ```
 ```java
 	private <T> Collection<T> getSpringFactoriesInstances(Class<T> type,
-    			Class<?>[] parameterTypes, Object... args) {
-    		ClassLoader classLoader = getClassLoader();
-    		// Use names and ensure unique to protect against duplicates
-    		Set<String> names = new LinkedHashSet<>(
-    				SpringFactoriesLoader.loadFactoryNames(type, classLoader));
-    		List<T> instances = createSpringFactoriesInstances(type, parameterTypes,
-    				classLoader, args, names);
-    		AnnotationAwareOrderComparator.sort(instances);
-    		return instances;
-    	}
+            Class<?>[] parameterTypes, Object... args) {
+        ClassLoader classLoader = getClassLoader();
+        // Use names and ensure unique to protect against duplicates
+        Set<String> names = new LinkedHashSet<>(
+                SpringFactoriesLoader.loadFactoryNames(type, classLoader));
+        List<T> instances = createSpringFactoriesInstances(type, parameterTypes,
+                classLoader, args, names);
+        AnnotationAwareOrderComparator.sort(instances);
+        return instances;
+    }
 ```
 ##### ApplicationArguments(设置应用程序参数)
 ```java
@@ -37,20 +37,20 @@
 ```
 ```java
     private ConfigurableEnvironment prepareEnvironment(
-    			SpringApplicationRunListeners listeners,
-    			ApplicationArguments applicationArguments) {
-    		// Create and configure the environment
-    		ConfigurableEnvironment environment = getOrCreateEnvironment();
-    		configureEnvironment(environment, applicationArguments.getSourceArgs());
-    		listeners.environmentPrepared(environment);
-    		bindToSpringApplication(environment);
-    		if (!this.isCustomEnvironment) {
-    			environment = new EnvironmentConverter(getClassLoader())
-    					.convertEnvironmentIfNecessary(environment, deduceEnvironmentClass());
-    		}
-    		ConfigurationPropertySources.attach(environment);
-    		return environment;
-    	}
+            SpringApplicationRunListeners listeners,
+            ApplicationArguments applicationArguments) {
+        // Create and configure the environment
+        ConfigurableEnvironment environment = getOrCreateEnvironment();
+        configureEnvironment(environment, applicationArguments.getSourceArgs());
+        listeners.environmentPrepared(environment);
+        bindToSpringApplication(environment);
+        if (!this.isCustomEnvironment) {
+            environment = new EnvironmentConverter(getClassLoader())
+                    .convertEnvironmentIfNecessary(environment, deduceEnvironmentClass());
+        }
+        ConfigurationPropertySources.attach(environment);
+        return environment;
+    }
 ```
 #### !!!!!!重点 context 上下文!!!!!!
 ```java
@@ -90,7 +90,7 @@
 #### 重点在 refreshContext 此处涉及到 Bean 的初始化 （一路点下去 到达 AbstractApplicationContext 的refresh方法）
 ##### 流程：准备好上下文 --》 准备bean工厂 --》 处理bean工厂 --》 注册bean工厂（作为beans）到上下文中 --》 将消息来源之类的内容注册到bean工厂中 --》 完成bean工厂的初始化（此处任何一步出异常都要销毁原来已经注册的bean）
 ```java
-@Override
+    @Override
 	public void refresh() throws BeansException, IllegalStateException {
 		synchronized (this.startupShutdownMonitor) {
 			// Prepare this context for refreshing.
