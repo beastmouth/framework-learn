@@ -1,5 +1,6 @@
 # SpringBoot 的启动流程
 ### 主要是初始化 SpringApplication -涉及- SpringApplicationRunListeners，ApplicationArguments（应用程序参数）,ConfigurableEnvironment(环境)，Banner(打印),context(上下文),exceptionReporters
+### 主要用到的几个类：SpringApplication.java,AbstractApplicationContext.java,DefaultListableBeanFactory.java,AbstractBeanFactory.java
 ##### StopWatch 观察 SpringBoot 项目的启动
 ##### SpringApplicationRunListeners
 ##### run方法中，加载了一系列SpringApplicationRunListener对象，在创建和更新ApplicationContext方法前后分别调用了listeners对象的started方法和finished方法, 
@@ -61,6 +62,7 @@
         Class<?> contextClass = this.applicationContextClass;
         if (contextClass == null) {
             try {
+                // 根据不同的 webApplicationType 来选择不同的上下文
                 switch (this.webApplicationType) {
                 case SERVLET:
                     contextClass = Class.forName(DEFAULT_SERVLET_WEB_CONTEXT_CLASS);
