@@ -16,4 +16,4 @@
 * 包含Bean的各种定义，便于实例化Bean
 * 建立Bean之间的依赖关系
 * Bean生命周期的控制
-[BeanFactory体系](../../images/ioc/BeanFactory体系.jpg)
+![BeanFactory体系](../../images/ioc/BeanFactory体系.jpg)
