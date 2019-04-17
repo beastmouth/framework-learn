@@ -3,6 +3,14 @@
 ### 主要用到的几个类：**SpringApplication.java,AbstractApplicationContext.java,DefaultListableBeanFactory.java,AbstractBeanFactory.java**
 ### 重点的看 **上下文的注册和刷新（ createApplicationContext ），Bean的初始化（ finishBeanFactoryInitialization ）**
 \===============================================================================
+##### Bean的初始化流程
+* 准备好上下文
+* 准备bean工厂
+* 处理bean工厂
+* 注册bean工厂（作为beans）到上下文中
+* 将消息来源之类的内容注册到bean工厂中
+* 完成bean工厂的初始化（此处任何一步出异常都要销毁原来已经注册的bean）
+\===============================================================================
 ##### StopWatch 观察 SpringBoot 项目的启动
 ##### SpringApplicationRunListeners
 ##### run方法中，加载了一系列SpringApplicationRunListener对象，在创建和更新ApplicationContext方法前后分别调用了listeners对象的started方法和finished方法, 
