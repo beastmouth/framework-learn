@@ -87,4 +87,178 @@
     refreshContext(context);
     afterRefresh(context, applicationArguments);
 ```
-#### 重点在 refreshContext 此处涉及到 Bean 的初始化
+#### 重点在 refreshContext 此处涉及到 Bean 的初始化 （一路点下去 到达 AbstractApplicationContext 的refresh方法）
+##### 流程：准备好上下文 --》 准备bean工厂 --》 处理bean工厂 --》 注册bean工厂（作为beans）到上下文中 --》 将消息来源之类的内容注册到bean工厂中 --》 完成bean工厂的初始化（此处任何一步出异常都要销毁原来已经注册的bean）
+```java
+@Override
+	public void refresh() throws BeansException, IllegalStateException {
+		synchronized (this.startupShutdownMonitor) {
+			// Prepare this context for refreshing.
+			prepareRefresh();
+
+			// Tell the subclass to refresh the internal bean factory.
+			ConfigurableListableBeanFactory beanFactory = obtainFreshBeanFactory();
+
+			// Prepare the bean factory for use in this context.
+			prepareBeanFactory(beanFactory);
+
+			try {
+				// Allows post-processing of the bean factory in context subclasses.
+				postProcessBeanFactory(beanFactory);
+
+				// Invoke factory processors registered as beans in the context.
+				invokeBeanFactoryPostProcessors(beanFactory);
+
+				// Register bean processors that intercept bean creation.
+				registerBeanPostProcessors(beanFactory);
+
+				// Initialize message source for this context.
+				initMessageSource();
+
+				// Initialize event multicaster for this context.
+				initApplicationEventMulticaster();
+
+				// Initialize other special beans in specific context subclasses.
+				onRefresh();
+
+				// Check for listener beans and register them.
+				registerListeners();
+
+				// Instantiate all remaining (non-lazy-init) singletons.
+				finishBeanFactoryInitialization(beanFactory);
+
+				// Last step: publish corresponding event.
+				finishRefresh();
+			}
+
+			catch (BeansException ex) {
+				if (logger.isWarnEnabled()) {
+					logger.warn("Exception encountered during context initialization - " +
+							"cancelling refresh attempt: " + ex);
+				}
+
+				// Destroy already created singletons to avoid dangling resources.
+				destroyBeans();
+
+				// Reset 'active' flag.
+				cancelRefresh(ex);
+
+				// Propagate exception to caller.
+				throw ex;
+			}
+
+			finally {
+				// Reset common introspection caches in Spring's core, since we
+				// might not ever need metadata for singleton beans anymore...
+				resetCommonCaches();
+			}
+		}
+	}
+```
+##### 在完成bean工厂的初始化这个方法 finishBeanFactoryInitialization 这里会把bean实例和属性注入 进入该方法的最后一行
+```java
+    // Instantiate all remaining (non-lazy-init) singletons.
+    beanFactory.preInstantiateSingletons();
+```
+```java
+    // 来自上一步的 preInstantiateSingletons 方法里面
+    RootBeanDefinition bd = getMergedLocalBeanDefinition(beanName);
+```
+```java
+    protected RootBeanDefinition getMergedLocalBeanDefinition(String beanName) throws BeansException {
+		// Quick check on the concurrent map first, with minimal locking.
+		// 先看原来有没有注册过 如果有的话直接使用
+		RootBeanDefinition mbd = this.mergedBeanDefinitions.get(beanName);
+		if (mbd != null) {
+			return mbd;
+		}
+		return getMergedBeanDefinition(beanName, getBeanDefinition(beanName));
+	}
+```
+```java
+    protected RootBeanDefinition getMergedBeanDefinition(String beanName, BeanDefinition bd)
+			throws BeanDefinitionStoreException {
+
+		return getMergedBeanDefinition(beanName, bd, null);
+	}
+```
+```java
+    protected RootBeanDefinition getMergedBeanDefinition(
+            String beanName, BeanDefinition bd, @Nullable BeanDefinition containingBd)
+            throws BeanDefinitionStoreException {
+    
+        synchronized (this.mergedBeanDefinitions) {
+            RootBeanDefinition mbd = null;
+    
+            // Check with full lock now in order to enforce the same merged instance.
+            // 进入 synchronized 方法 再拿一次 如果这时候已经被别人注册进去的话 就可以拿到
+            // 否则肯定没有注册进去
+            if (containingBd == null) {
+                mbd = this.mergedBeanDefinitions.get(beanName);
+            }
+    
+            // 需要跟父bean扯上关系 未仔细看
+            if (mbd == null) {
+                if (bd.getParentName() == null) {
+                    // Use copy of given root bean definition.
+                    if (bd instanceof RootBeanDefinition) {
+                        mbd = ((RootBeanDefinition) bd).cloneBeanDefinition();
+                    }
+                    else {
+                        mbd = new RootBeanDefinition(bd);
+                    }
+                }
+                else {
+                    // Child bean definition: needs to be merged with parent.
+                    BeanDefinition pbd;
+                    try {
+                        String parentBeanName = transformedBeanName(bd.getParentName());
+                        if (!beanName.equals(parentBeanName)) {
+                            pbd = getMergedBeanDefinition(parentBeanName);
+                        }
+                        else {
+                            BeanFactory parent = getParentBeanFactory();
+                            if (parent instanceof ConfigurableBeanFactory) {
+                                pbd = ((ConfigurableBeanFactory) parent).getMergedBeanDefinition(parentBeanName);
+                            }
+                            else {
+                                throw new NoSuchBeanDefinitionException(parentBeanName,
+                                        "Parent name '" + parentBeanName + "' is equal to bean name '" + beanName +
+                                        "': cannot be resolved without an AbstractBeanFactory parent");
+                            }
+                        }
+                    }
+                    catch (NoSuchBeanDefinitionException ex) {
+                        throw new BeanDefinitionStoreException(bd.getResourceDescription(), beanName,
+                                "Could not resolve parent bean definition '" + bd.getParentName() + "'", ex);
+                    }
+                    // Deep copy with overridden values.
+                    mbd = new RootBeanDefinition(pbd);
+                    mbd.overrideFrom(bd);
+                }
+    
+                // Set default singleton scope, if not configured before.
+                if (!StringUtils.hasLength(mbd.getScope())) {
+                    mbd.setScope(RootBeanDefinition.SCOPE_SINGLETON);
+                }
+    
+                // A bean contained in a non-singleton bean cannot be a singleton itself.
+                // Let's correct this on the fly here, since this might be the result of
+                // parent-child merging for the outer bean, in which case the original inner bean
+                // definition will not have inherited the merged outer bean's singleton status.
+                if (containingBd != null && !containingBd.isSingleton() && mbd.isSingleton()) {
+                    mbd.setScope(containingBd.getScope());
+                }
+    
+                // Cache the merged bean definition for the time being
+                // (it might still get re-merged later on in order to pick up metadata changes)
+                if (containingBd == null && isCacheBeanMetadata()) {
+                    // 放进 map 中 以便下一次使用 无需重新注册
+                    this.mergedBeanDefinitions.put(beanName, mbd);
+                }
+            }
+    
+            return mbd;
+        }
+	}
+```
