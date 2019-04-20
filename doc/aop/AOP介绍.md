@@ -27,7 +27,7 @@
 ##### getBean 方法返回的实际上是 Proxy 的实例
 ##### Proxy 实例是 Spring 采用 JDK Proxy 或 CGLIB 动态生成的
 
-#### 生成动态代理的主流程
+#### Spring实现动态代理的主流程
 ##### AbstractBeanFactory
 ##### doGetBean
 ##### AbstractAutowireCapableBeanFactory
