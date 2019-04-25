@@ -1,5 +1,31 @@
 # SpringBoot 的启动流程
-### 主要是初始化 SpringApplication -涉及- SpringApplicationRunListeners，ApplicationArguments（应用程序参数）,ConfigurableEnvironment(环境)，Banner(打印),context(上下文),exceptionReporters
+## 主要是初始化 SpringApplication
+### 初始化创建ApplicationContext
+```java
+    // 例如的 这个 使用注解的形式创建 ApplicationContext
+    public static final String DEFAULT_CONTEXT_CLASS = "org.springframework.context."
+    			+ "annotation.AnnotationConfigApplicationContext";
+
+    // 初始化（不需要了解的非常的细致）
+    // setInitializers 可以重点看下
+    public SpringApplication(ResourceLoader resourceLoader, Class<?>... primarySources) {
+		this.resourceLoader = resourceLoader;
+		Assert.notNull(primarySources, "PrimarySources must not be null");
+		this.primarySources = new LinkedHashSet<>(Arrays.asList(primarySources));
+		this.webApplicationType = WebApplicationType.deduceFromClasspath();
+		setInitializers((Collection) getSpringFactoriesInstances(
+				ApplicationContextInitializer.class));
+		setListeners((Collection) getSpringFactoriesInstances(ApplicationListener.class));
+		this.mainApplicationClass = deduceMainApplicationClass();
+	}
+```
+<br/><br/><br/>
+### 初始化扫描加载Bean
+[SpringBoot注解介绍](../annotationintroduce/SpingBoot注解介绍.md)<br/><br/><br/>
+
+
+## \==========这里是Bean的初始化内容=========
+### -涉及- SpringApplicationRunListeners，ApplicationArguments（应用程序参数）,ConfigurableEnvironment(环境)，Banner(打印),context(上下文),exceptionReporters
 ### 主要用到的几个类：**SpringApplication.java,AbstractApplicationContext.java,DefaultListableBeanFactory.java,AbstractBeanFactory.java**
 ### 重点的看 **上下文的注册和刷新（ createApplicationContext ），Bean的初始化（ finishBeanFactoryInitialization ）**
 \===============================================================================
