@@ -1,6 +1,9 @@
 package com.narcos.frameworklearn.ioc.config;
 
+import com.narcos.frameworklearn.ioc.entity.Person;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 
 /**
  * @author hbj
@@ -12,12 +15,13 @@ public class ApplicationConfig {
     /**
      * name 定义bean的名称
      */
-//    @Bean(name = "person")
-//    public Person initPerson() {
-//        Person user = new Person();
-//        user.setId(1L);
-//        user.setName("hbj");
-//        return user;
-//    }
+    @Primary
+    @Bean(name = "personHbj")
+    public Person initPerson() {
+        Person user = new Person();
+        user.setId(1L);
+        user.setName("hbj");
+        return user;
+    }
 
 }
