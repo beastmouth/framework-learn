@@ -10,7 +10,7 @@
 Spring的配置：application.xml
 
 ```xml
-    <context:component-scan base-package="org.bc.redis" use-default-filters="true">
+    <context:component-scan base-package="com.learn" use-default-filters="true">
         <!-- 排除含@Controller注解的类 -->
         <context:exclude-filter type="annotation" expression="com.learn.controller"/>
     </context:component-scan>
