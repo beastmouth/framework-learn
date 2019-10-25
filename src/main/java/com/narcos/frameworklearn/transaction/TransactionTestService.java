@@ -15,4 +15,9 @@ public interface TransactionTestService {
     void kidOneTransactionFatherTransaction();
 
     void kidAllTransactionFatherTransaction();
+
+    /**
+     * 增加异步线程事务的测试
+     */
+    String asyncTransaction();
 }

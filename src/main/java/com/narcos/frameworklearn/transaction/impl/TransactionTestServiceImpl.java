@@ -1,10 +1,20 @@
 package com.narcos.frameworklearn.transaction.impl;
 
+import com.narcos.frameworklearn.dao.repository.TransactionTestOneRepository;
+import com.narcos.frameworklearn.dao.repository.TransactionTestTwoRepository;
+import com.narcos.frameworklearn.entity.po.TransactionTestOne;
+import com.narcos.frameworklearn.entity.po.TransactionTestTwo;
+import com.narcos.frameworklearn.transaction.AsyncService;
 import com.narcos.frameworklearn.transaction.TransactionTestOneService;
 import com.narcos.frameworklearn.transaction.TransactionTestService;
 import com.narcos.frameworklearn.transaction.TransactionTestTwoService;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 /**
  * @author hbj
@@ -12,14 +22,14 @@ import org.springframework.transaction.annotation.Transactional;
  * @date 2019/06/18 14:55
  **/
 @Service
+@AllArgsConstructor
 public class TransactionTestServiceImpl implements TransactionTestService {
     private final TransactionTestOneService transactionTestOneService;
     private final TransactionTestTwoService transactionTestTwoService;
-
-    public TransactionTestServiceImpl(TransactionTestOneService transactionTestOneService, TransactionTestTwoService transactionTestTwoService) {
-        this.transactionTestOneService = transactionTestOneService;
-        this.transactionTestTwoService = transactionTestTwoService;
-    }
+    private final TransactionTestOneRepository transactionTestOneRepository;
+    private final TransactionTestTwoRepository transactionTestTwoRepository;
+    private final AsyncService asyncService;
+    private final PlatformTransactionManager platformTransactionManager;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -82,5 +92,32 @@ public class TransactionTestServiceImpl implements TransactionTestService {
         System.out.println("TransactionTestOneService save result : " + save);
         boolean saveHadException = transactionTestTwoService.saveHadExceptionTransaction();
         System.out.println("TransactionTestTwoService save result : " + saveHadException);
+    }
+
+    @Override
+//    @Transactional(rollbackFor = Exception.class)
+    public String asyncTransaction() {
+        TransactionTestOne transactionTestOne = new TransactionTestOne();
+        transactionTestOne.setId(1);
+        transactionTestOne.setName("aa");
+        TransactionTestTwo transactionTestTwo = new TransactionTestTwo();
+        transactionTestTwo.setId(1);
+        // 事务定义
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        // 设置事务的传播行为
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        // 开启事务并获取事务状态
+        TransactionStatus status = platformTransactionManager.getTransaction(def);
+        try {
+
+            transactionTestOneRepository.save(transactionTestOne);
+            transactionTestTwoRepository.save(transactionTestTwo);
+            platformTransactionManager.commit(status);
+//            throw new RuntimeException("我在这里抛异常啦");
+        } catch (Exception e) {
+            platformTransactionManager.rollback(status);
+        }
+//        asyncService.asyncTransaction();
+        return "成功啦";
     }
 }
