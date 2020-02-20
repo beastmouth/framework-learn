@@ -11,8 +11,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Modifier;
-import java.util.Arrays;
 
 /**
  * @author hbj
@@ -34,13 +32,13 @@ public class RequestLogAspect {
         ServletRequestAttributes attributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = attributes.getRequest();
         // 记录以下请求内容
-        log.info("URL : {}", request.getRequestURL().toString());
-        log.info("IP : {}", request.getRemoteAddr());
-        log.info("CLASS SIMPLE NAME : {}", joinPoint.getSignature().getDeclaringType().getSimpleName());
-        log.info("CLASS NAME : {}", joinPoint.getSignature().getDeclaringTypeName());
-        log.info("METHOD TYPE : {}", Modifier.toString(joinPoint.getSignature().getModifiers()));
-        log.info("METHOD NAME : {}", joinPoint.getSignature().getName());
-        log.info("Params : {}", Arrays.toString(joinPoint.getArgs()));
+//        log.info("URL : {}", request.getRequestURL().toString());
+//        log.info("IP : {}", request.getRemoteAddr());
+//        log.info("CLASS SIMPLE NAME : {}", joinPoint.getSignature().getDeclaringType().getSimpleName());
+//        log.info("CLASS NAME : {}", joinPoint.getSignature().getDeclaringTypeName());
+//        log.info("METHOD TYPE : {}", Modifier.toString(joinPoint.getSignature().getModifiers()));
+//        log.info("METHOD NAME : {}", joinPoint.getSignature().getName());
+//        log.info("Params : {}", Arrays.toString(joinPoint.getArgs()));
 
     }
 
@@ -50,6 +48,6 @@ public class RequestLogAspect {
     @AfterReturning(returning = "ret", pointcut = "webLog()")
     public void doAfterReturning(Object ret) {
         // 处理完请求，返回内容
-        log.info("RESPONSE : {}", ret);
+//        log.info("RESPONSE : {}", ret);
     }
 }
