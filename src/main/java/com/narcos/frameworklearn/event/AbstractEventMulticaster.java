@@ -1,14 +1,19 @@
 package com.narcos.frameworklearn.event;
 
-import java.util.ArrayList;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 /**
  * @author hbj
  * @date 2020/2/20 18:27
  */
+@Component
 public abstract class AbstractEventMulticaster implements EventMulticaster {
-    private List<WeatherListener> listenerList = new ArrayList<>();
+    //    private List<WeatherListener> listenerList = new ArrayList<>();
+    @Autowired
+    private List<WeatherListener> listenerList;
 
     @Override
     public void multicastEvent(WeatherEvent event) {

@@ -1,9 +1,12 @@
 package com.narcos.frameworklearn.event;
 
+import org.springframework.stereotype.Component;
+
 /**
  * @author hbj
  * @date 2020/2/20 18:30
  */
+@Component
 public class WeatherEventMulticaster extends AbstractEventMulticaster {
 
     @Override
