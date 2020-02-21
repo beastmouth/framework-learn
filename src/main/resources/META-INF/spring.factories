@@ -1,2 +1,3 @@
 # ×¢²áµ½SpringÖÐ
 org.springframework.context.ApplicationContextInitializer=com.narcos.frameworklearn.initializer.FirstInitializer,com.narcos.frameworklearn.initializer.FiveInitializer
+org.springframework.context.ApplicationListener=com.narcos.frameworklearn.listener.FirstListener,com.narcos.frameworklearn.listener.FourListener

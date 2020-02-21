@@ -9,3 +9,5 @@ spring:
 context:
   initializer:
     classes: com.narcos.frameworklearn.initializer.ThirdInitializer,com.narcos.frameworklearn.initializer.FourInitializer
+  listener:
+    classes: com.narcos.frameworklearn.listener.ThirdListener
