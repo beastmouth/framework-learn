@@ -26,10 +26,10 @@
         </property>
     </bean>
 
-    <bean id="helloService" class="com.narcos.frameworklearn.ioc.xml.HelloService">
+    <!--<bean id="helloService" class="com.narcos.frameworklearn.ioc.xml.HelloService">
         <property name="student" ref="student"/>
         <property name="animal" ref="dog"/>
-    </bean>
+    </bean>-->
 
     <bean name="animalFactory" class="com.narcos.frameworklearn.ioc.xml.AnimalFactory"/>
 

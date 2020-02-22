@@ -1,12 +1,20 @@
 package com.narcos.frameworklearn.ioc.xml;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Component;
+
 /**
  * @author hbj
  * @date 2020/2/22 14:23
  */
+@Component
 public class HelloService {
     private Student student;
 
+    @Autowired
+    // 指定使用哪个实现类
+    @Qualifier("bird")
     private Animal animal;
 
     public Student getStudent() {
@@ -30,6 +38,7 @@ public class HelloService {
     }
 
     public String hello2() {
+//        return "hello";
         return animal.getName();
     }
 }
