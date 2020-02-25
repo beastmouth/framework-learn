@@ -9,12 +9,12 @@ import org.springframework.stereotype.Component;
  * @date 2020/2/22 14:23
  */
 @Component
-public class HelloService {
+public class HelloService2 {
     private Student student;
 
     @Autowired
     // 指定使用哪个实现类
-    @Qualifier("bird")
+    @Qualifier("monkey")
     private Animal animal;
 
     public Student getStudent() {

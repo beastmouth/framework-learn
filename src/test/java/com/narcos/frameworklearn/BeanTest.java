@@ -1,7 +1,7 @@
 package com.narcos.frameworklearn;
 
 import com.narcos.frameworklearn.ioc.ann.MyBeanImport;
-import com.narcos.frameworklearn.ioc.xml.HelloService;
+import com.narcos.frameworklearn.ioc.xml.HelloService2;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +19,10 @@ import org.springframework.test.context.junit4.SpringRunner;
 //@ContextConfiguration(locations = "classpath:ioc/demo.xml")
 public class BeanTest {
     @Autowired
-    private HelloService helloService;
+    private HelloService2 helloService2;
 
     @Test
     public void test() {
-        System.out.println(helloService.hello2());
+        System.out.println(helloService2.hello2());
     }
 }
