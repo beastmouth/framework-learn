@@ -1,8 +1,10 @@
 package com.narcos.frameworklearn;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.ResourceBanner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 /**
@@ -17,14 +19,15 @@ import org.springframework.scheduling.annotation.EnableAsync;
 public class FrameworkLearnApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(FrameworkLearnApplication.class, args);
+//        SpringApplication.run(FrameworkLearnApplication.class, args);
 //        Person personBean = applicationContext.getBean(Person.class);
 //        Person person = (Person) applicationContext.getBean("person");
 //        System.out.println("personBean : " + personBean.toString() + " personName : " + person.toString());
 //        person.call();
-//        SpringApplication springApplication = new SpringApplication(FrameworkLearnApplication.class);
+        SpringApplication springApplication = new SpringApplication(FrameworkLearnApplication.class);
+        springApplication.setBanner(new ResourceBanner(new ClassPathResource("fbi_warning.txt")));
 //        springApplication.addInitializers(new SecondInitializer());
 //        springApplication.addListeners(new SecondListener());
-//        springApplication.run();
+        springApplication.run();
     }
 }
