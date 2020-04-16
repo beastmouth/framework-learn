@@ -18,6 +18,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 public class FrameworkLearnApplication {
 
+//    @Autowired
+//    Number number;
+
     public static void main(String[] args) {
 //        SpringApplication.run(FrameworkLearnApplication.class, args);
 //        Person personBean = applicationContext.getBean(Person.class);

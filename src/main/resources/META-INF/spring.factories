@@ -1,3 +1,4 @@
-# 注册到Spring中
-org.springframework.context.ApplicationContextInitializer=com.narcos.frameworklearn.initializer.FirstInitializer,com.narcos.frameworklearn.initializer.FiveInitializer
-org.springframework.context.ApplicationListener=com.narcos.frameworklearn.listener.FirstListener,com.narcos.frameworklearn.listener.FourListener
+## 注册到Spring中
+#org.springframework.context.ApplicationContextInitializer=com.narcos.frameworklearn.initializer.FirstInitializer,com.narcos.frameworklearn.initializer.FiveInitializer
+#org.springframework.context.ApplicationListener=com.narcos.frameworklearn.listener.FirstListener,com.narcos.frameworklearn.listener.FourListener
+org.springframework.boot.SpringBootExceptionReporter=com.narcos.frameworklearn.exception.MyExceptionReporter
