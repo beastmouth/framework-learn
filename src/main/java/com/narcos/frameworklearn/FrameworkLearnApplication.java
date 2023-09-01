@@ -18,19 +18,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @SpringBootApplication
 public class FrameworkLearnApplication {
 
-//    @Autowired
-//    Number number;
-
     public static void main(String[] args) {
-//        SpringApplication.run(FrameworkLearnApplication.class, args);
-//        Person personBean = applicationContext.getBean(Person.class);
-//        Person person = (Person) applicationContext.getBean("person");
-//        System.out.println("personBean : " + personBean.toString() + " personName : " + person.toString());
-//        person.call();
         SpringApplication springApplication = new SpringApplication(FrameworkLearnApplication.class);
-        springApplication.setBanner(new ResourceBanner(new ClassPathResource("fbi_warning.txt")));
-//        springApplication.addInitializers(new SecondInitializer());
-//        springApplication.addListeners(new SecondListener());
         springApplication.run();
     }
 }

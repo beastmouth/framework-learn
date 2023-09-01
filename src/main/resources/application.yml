@@ -3,11 +3,3 @@ server:
 spring:
   application:
     name: framework-learn
-  profiles:
-    active:
-#      - db
-context:
-  initializer:
-    classes: com.narcos.frameworklearn.initializer.ThirdInitializer,com.narcos.frameworklearn.initializer.FourInitializer
-  listener:
-    classes: com.narcos.frameworklearn.listener.ThirdListener

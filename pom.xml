@@ -38,29 +38,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
         </dependency>
-        <!-- 使用阿里数据源 -->
-        <!--<dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
-            <version>1.1.10</version>
-        </dependency>
-        &lt;!&ndash; mysql驱动&ndash;&gt;
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-        &lt;!&ndash; 本模块需要操作数据库，故添加spring-boot-starter-data-jpa依赖 &ndash;&gt;
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        &lt;!&ndash; jpa兼容高版本jdk &ndash;&gt;
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>3.23.1-GA</version>
-        </dependency>-->
     </dependencies>
 
     <build>
